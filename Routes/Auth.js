@@ -172,15 +172,110 @@ router.post('/createuser', [
 //   }
 // });
 
+  
+
+
+// router.post('/createstudent', [
+//   body('name').isLength({ min: 3 }).withMessage('Name must be at least 3 characters long'),
+//   body('email').isEmail().withMessage('Invalid email format'),
+//   body('course').isMongoId().withMessage('Invalid course ID'),
+//   body('admissionDate').optional().isISO8601().toDate().withMessage('Invalid admission date'),
+//   body('totalFeesPaid').optional().isNumeric().withMessage('Total Fees Paid must be a number'),
+//   body('scholarshipAmount').optional().isNumeric().withMessage('Scholarship Amount must be a number'),
+//   body('pendingFees').optional().isNumeric().withMessage('Pending Fees must be a number'),
+//   body('isActive').optional().isBoolean().withMessage('Is Active must be a boolean')
+// ], async (req, res) => {
+//   let success = false;
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     return res.status(400).json({ success, errors: errors.array() });
+//   }
+
+//   const { name, email, course, admissionDate, totalFeesPaid, scholarshipAmount, pendingFees, isActive } = req.body;
+
+//   try {
+//     // Check if a student with the same email already exists
+//     const existingStudent = await Student.findOne({ email });
+//     if (existingStudent) {
+//       return res.status(400).json({ success: false, error: 'Student with this email already exists.' });
+//     }
+
+//     // Create the student record
+//     const student = await Student.create({
+//       name,
+//       email,
+//       course,
+//       admissionDate,
+//       totalFeesPaid,
+//       scholarshipAmount,
+//       pendingFees,
+//       isActive,
+//     });
+
+//     // Configure the email transport using Nodemailer
+//     const transporter = nodemailer.createTransport({
+//       service: 'Gmail', // Use your email service provider
+//       auth: {
+//         user: "jdwebservices1@gmail.com",
+//         pass: "cwoxnbrrxvsjfbmr"
+//       },
+//     });
+
+//     // Define the email options with HTML content
+//     const mailOptions = {
+//       from: 'your-email@gmail.com',
+//       to: student.email,
+//       subject: 'Welcome to Our School',
+//       html: `
+//       <div>
+//       <p>Dear ${student.name}  </p>
+//       <h3>Welcome to Career Engine!</h3>
+//       <p>
+//           Thank you for choosing the ${student.course} course. Your course fee is ${student.totalFeesPaid}. We are pleased to inform you that you have been awarded a scholarship of
+//           <span style="color: blue;">  ${student.scholarshipAmount}</span> , which will be deducted from your total fee.
+//       </p>
+//       <p>    If you have any questions, feel free to contact us at <a href="t">  +919041619321, +919914649789.
+//       </p> 
+//       <p> 
+//       Best regards,
+//   </p> 
+//   <h3> Career Engine</h3>
+//   <p><a href="https://careerengine.in/"> Career Engine Site </a></p>
+   
+//   </div>
+//       `,
+     
+//     };
+
+//     // Send the email
+//     transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//         console.error('Error sending email:', error);
+//       } else {
+//         console.log('Email sent:', info.response);
+//       }
+//     });
+
+//     success = true;
+//     res.json({ success, student });
+//   } catch (error) {
+//     console.error('Server error:', error.message);
+//     res.status(500).json({ success: false, error: 'Server Error' });
+//   }
+// });
+
+// module.exports = router;
 
 
 
 router.post('/createstudent', [
   body('name').isLength({ min: 3 }).withMessage('Name must be at least 3 characters long'),
   body('email').isEmail().withMessage('Invalid email format'),
+
   body('course').isMongoId().withMessage('Invalid course ID'),
   body('admissionDate').optional().isISO8601().toDate().withMessage('Invalid admission date'),
   body('totalFeesPaid').optional().isNumeric().withMessage('Total Fees Paid must be a number'),
+ 
   body('scholarshipAmount').optional().isNumeric().withMessage('Scholarship Amount must be a number'),
   body('pendingFees').optional().isNumeric().withMessage('Pending Fees must be a number'),
   body('isActive').optional().isBoolean().withMessage('Is Active must be a boolean')
@@ -200,11 +295,19 @@ router.post('/createstudent', [
       return res.status(400).json({ success: false, error: 'Student with this email already exists.' });
     }
 
+    // Fetch the course details
+    const courseDetails = await Course.findById(course);
+    if (!courseDetails) {
+      return res.status(400).json({ success: false, error: 'Course not found.' });
+    }
+
     // Create the student record
     const student = await Student.create({
       name,
       email,
       course,
+    
+   
       admissionDate,
       totalFeesPaid,
       scholarshipAmount,
@@ -227,26 +330,152 @@ router.post('/createstudent', [
       to: student.email,
       subject: 'Welcome to Our School',
       html: `
-        <div style="width: 50%; margin: auto; text-align: center;">
-          <div>
-            <h2 style="color:#00ab22;">Hello, <span style="color: #de095b;">${student.name}</span></h2>
-          </div>
-          <div>
-            <img src="cid:logo" alt="Logo" style="max-width: 100%; height: auto;">
-          </div>
-          <button style="background-color: #000078; border: 2px solid #000078; border-radius: 25px; width: 210px; margin-top: 20px;">
-            <a href="https://careerengine.in/" style="color: wheat; text-decoration: none;">
-              <h3> Check Career Engine </h3>
-            </a>
-          </button>
-          <p style="margin-top: 20px;">Thank you for choosing </p>
+      <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+    
+body{
+  width: 50%;
+  margin: auto
+}
+.end{
+
+}
+.logo{
+
+}
+.main{
+  width: 50%;
+  background-color: aquad;
+}
+.div1{
+  float: left;
+  width: 33.33%;
+  font-size: 25px;
+  text-align: end;
+  margin: auto;
+  height: 230px;
+}
+.div2{
+  float: left;
+  width: 33.33%;
+  height: 230px;
+}
+.div3{
+  float: left;
+  width: 33.33%;
+  margin: auto;
+  height: 230px;
+}
+.img{
+  width: 100%;
+  height: 230px;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+.d3{
+  margin-top: 25px;
+}
+@media only screen and (min-width: 320px) and (max-width: 479px){
+  .logo{
+      width: 100%;
+  }
+ body{
+      text-align: center;
+      width: 100%;
+  }
+  .end{
+      background-color: rgb(169, 224, 205);
+  }
+
+ .div1{
+  width: 100%;
+  text-align: center;
+  height: 150px;
+  
+ }
+ .div2{
+  width: 100%;
+ }
+ .div3{
+  width: 100%;
+  
+ }
+
+
+}
+@media only screen and (min-width: 992px){
+  body{
+      width: 50%;
+  }
+}
+    </style>
+</head>
+<body>
+    <div style="margin: auto;">
+        <div class="logo">
+            <img src="https://careerengine.in/wp-content/uploads/2023/02/logo.png" alt="">
         </div>
+        <hr>
+        <div class="h2">
+            <h2 class="h1">Welcome to Career Engine!</h1>
+        </div>
+        <div>
+            <p>
+                Thank you for choosing the ${student.courseName }course. Your Course Batch ${student.batch}Your course fee is ${student.totalFeesPaid}. We are pleased to inform you that you have been awarded a scholarship of ${student.scholarshipAmount}, which will be deducted from your total fee. Your pending fee is ${student.pendingFees}.
+            </p>
+        </div>
+        <div class="end">
+            <div class="div1 end">
+                <h1>Career Engine</h1>
+                <div style="text-align: center;">
+                    <!-- Facebook icon with real color -->
+                    <i class="fab fa-facebook-f" style="color: #3b5998;"></i>
+                    <!-- Instagram icon -->
+                    <i class="fab fa-instagram" style="color: #E4405F;"></i>
+                    <!-- YouTube icon -->
+                    <i class="fab fa-youtube" style="color: #FF0000;"></i>
+                </div>
+            </div>
+            <div class="div2 end">
+            <img src="https://charn13.github.io/malti-step-form/mm.png" alt="" class="img">
+            </div>
+            <div class="div3 end">
+                <hr>
+                <p class="d3">
+                    <i class="fas fa-phone" style="color: #E4405F;" ></i> <!-- Phone icon -->
+                    <a href="tel">+919041619321</a>
+                </p>
+                <p class="d3">
+                    <i class="far fa-envelope" style="color: #E4405F;"></i> <!-- Email icon -->
+                    <a href="email">Info@careerengine.in</a>
+                </p>
+                <p class="d3">
+                    <i class="fas fa-globe" style="color: #E4405F;" ></i> <!-- Website icon -->
+                    <a href="https://careerengine.in/">https://careerengine.in/</a>
+                </p>
+                <p class="d3">
+                    <i class="fas fa-map-marker-alt" style="color: #E4405F;"></i> <!-- Location icon -->
+                    <a href="https://g.page/r/Ce11Ozd6v2r2EBM/review">Near Maan Chonwk, Chak Road, Sri Muktsar Sahib (152026), Punjab, India</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
       `,
-      attachments: [{
-        filename: 'logo.png',
-        path: 'https://careerengine.in/wp-content/uploads/2023/02/logo.png', // Adjust the path to your logo image
-        cid: 'logo' // Same cid value as in the HTML img src
-      }]
+     
     };
 
     // Send the email
@@ -267,6 +496,17 @@ router.post('/createstudent', [
 });
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -368,6 +608,7 @@ router.post('/updatestudents/:id', async (req, res) => {
     student = await Student.findByIdAndUpdate(id, {
       name,
       email,
+      phoneNo,
       course,
       admissionDate,
       totalFeesPaid,
@@ -465,7 +706,7 @@ router.get('/courses/:id', async (req, res) => {
 });
 
 // Route to update a specific course by ID
-router.put('/courses/:id', async (req, res) => {
+router.put('/coursesupdate/:id', async (req, res) => {
   const { id } = req.params;
   const { name, fee, durationInMonths } = req.body;
   try {
@@ -576,9 +817,11 @@ router.get('/teachers/:id', async (req, res) => {
 });
 
 // Route to update a specific teacher by ID
-router.put('/teachers/:id', async (req, res) => {
+router.put('/teachersupdate/:id', async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   const { name, email, coursesAssigned } = req.body;
+  console.log("name",name, "Email: ", email, "Course", coursesAssigned );
   try {
     let teacher = await Teacher.findById(id);
     if (!teacher) {
