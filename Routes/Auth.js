@@ -348,7 +348,7 @@ router.post('/updatestudents/:id', async (req, res) => {
     student = await Student.findByIdAndUpdate(id, {
       name,
       email,
-      phoneNo,
+  
       course,
       admissionDate,
       totalFeesPaid,
@@ -722,25 +722,75 @@ const mailOptions = {
   to: studentEmail,
   subject: 'Fee Receipt',
   html: `
-    <div style="font-family: Arial, sans-serif; background-color: black;"></div>
-    <div style="max-width: 600px; margin: 50px auto; padding: 20px; background-color: black; color: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-      <h2 style="text-align: center; margin-bottom: 20px;">Fee Receipt</h2>
-      <table style="width: 100%; margin-bottom: 20px; border-collapse: collapse;">
-        <tr>
-          <th>Field</th>
-          <th>Details</th>
-        </tr>
-        <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #fff; text-align: left;"><strong>Student Name</strong></td>
-          <td style="padding: 10px; border-bottom: 1px solid #fff; text-align: left;">${studentRecord.name}</td>
-        </tr>
-        <tr>
-          <td style="padding: 10px; border-bottom: 1px solid #fff; text-align: left;"><strong>Email</strong></td>
-          <td style="padding: 10px; border-bottom: 1px solid #fff; text-align: left;">${studentRecord.email}</td>
-        </tr>
-        <!-- Add other receipt details here -->
-      </table>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fee Receipt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .receipt {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .receipt-details {
+      margin-bottom: 20px;
+    }
+    .details-item {
+      margin-bottom: 10px;
+    }
+    .total {
+      font-weight: bold;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+   <div class="logo">
+            <img src="https://careerengine.in/wp-content/uploads/2023/02/logo.png" alt="">
+        </div>
+    <div class="header">
+      <h2>Fee Receipt</h2>
     </div>
+    <div class="receipt-details">
+      <div class="details-item">
+        <strong>Student Name:</strong> ${studentRecord.name}
+      </div>
+      <div class="details-item">
+        <strong>Amount Paid:</strong> ${amountPaid}
+      </div>
+      <div class="details-item">
+        <strong>Payment Method:</strong> ${paymentMethod}
+      </div>
+      <div class="details-item">
+        <strong>Receipt Number:</strong>${receiptNumber}
+      </div>
+      <div class="details-item">
+        <strong>Notes:</strong>${notes}
+      </div>
+    </div>
+    <div class="footer">
+      <p>Thank you for your payment!</p>
+    </div>
+  </div>
+</body>
+</html>
+
   `
 };
 
