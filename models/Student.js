@@ -12,6 +12,14 @@ const StudentSchema = new Schema({
         type: String, 
         required: true 
     },
+    batch: {
+        type: String,
+        required: true 
+    },  
+    phoneNumber: {
+        type: Number,
+        required: true ,
+    },
     course: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }], // Reference to Course model
     admissionDate: { 
         type: Date, 

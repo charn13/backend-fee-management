@@ -76,3 +76,153 @@ a{
         width: 50%;
     }
 }
+
+
+
+/* sda
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+    
+body{
+  width: 50%;
+  margin: auto
+}
+.end{
+
+}
+.logo{
+
+}
+.main{
+  width: 50%;
+  background-color: aquad;
+}
+.div1{
+  float: left;
+  width: 33.33%;
+  font-size: 25px;
+  text-align: end;
+  margin: auto;
+  height: 230px;
+}
+.div2{
+  float: left;
+  width: 33.33%;
+  height: 230px;
+}
+.div3{
+  float: left;
+  width: 33.33%;
+  margin: auto;
+  height: 230px;
+}
+.img{
+  width: 100%;
+  height: 230px;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+.d3{
+  margin-top: 25px;
+}
+@media only screen and (min-width: 320px) and (max-width: 479px){
+  .logo{
+      width: 100%;
+  }
+ body{
+      text-align: center;
+      width: 100%;
+  }
+  .end{
+      background-color: rgb(169, 224, 205);
+  }
+
+ .div1{
+  width: 100%;
+  text-align: center;
+  height: 150px;
+  
+ }
+ .div2{
+  width: 100%;
+ }
+ .div3{
+  width: 100%;
+  
+ }
+
+
+}
+@media only screen and (min-width: 992px){
+  body{
+      width: 50%;
+  }
+}
+    </style>
+</head>
+<body>
+    <div style="margin: auto;">
+        <div class="logo">
+            <img src="https://careerengine.in/wp-content/uploads/2023/02/logo.png" alt="">
+        </div>
+        <hr>
+        <div class="h2">
+            <h2 class="h1">Welcome to Career Engine!</h1>
+        </div>
+        <div>
+            <p>
+                Thank you for choosing the ${student.courseName }course. Your Course Batch ${student.batch}Your course fee is ${student.totalFeesPaid}. We are pleased to inform you that you have been awarded a scholarship of ${student.scholarshipAmount}, which will be deducted from your total fee. Your pending fee is ${student.pendingFees}.
+            </p>
+        </div>
+        <div class="end">
+            <div class="div1 end">
+                <h1>Career Engine</h1>
+                <div style="text-align: center;">
+                    <!-- Facebook icon with real color -->
+                    <i class="fab fa-facebook-f" style="color: #3b5998;"></i>
+                    <!-- Instagram icon -->
+                    <i class="fab fa-instagram" style="color: #E4405F;"></i>
+                    <!-- YouTube icon -->
+                    <i class="fab fa-youtube" style="color: #FF0000;"></i>
+                </div>
+            </div>
+            <div class="div2 end">
+            <img src="https://charn13.github.io/malti-step-form/mm.png" alt="" class="img">
+            </div>
+            <div class="div3 end">
+                <hr>
+                <p class="d3">
+                    <i class="fas fa-phone" style="color: #E4405F;" ></i> <!-- Phone icon -->
+                    <a href="tel">+919041619321</a>
+                </p>
+                <p class="d3">
+                    <i class="far fa-envelope" style="color: #E4405F;"></i> <!-- Email icon -->
+                    <a href="email">Info@careerengine.in</a>
+                </p>
+                <p class="d3">
+                    <i class="fas fa-globe" style="color: #E4405F;" ></i> <!-- Website icon -->
+                    <a href="https://careerengine.in/">https://careerengine.in/</a>
+                </p>
+                <p class="d3">
+                    <i class="fas fa-map-marker-alt" style="color: #E4405F;"></i> <!-- Location icon -->
+                    <a href="https://g.page/r/Ce11Ozd6v2r2EBM/review">Near Maan Chonwk, Chak Road, Sri Muktsar Sahib (152026), Punjab, India</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+*/

@@ -78,14 +78,15 @@ router.post('/createuser', [
 
 
 
+
 router.post('/createstudent', [
   body('name').isLength({ min: 3 }).withMessage('Name must be at least 3 characters long'),
   body('email').isEmail().withMessage('Invalid email format'),
-
   body('course').isMongoId().withMessage('Invalid course ID'),
   body('admissionDate').optional().isISO8601().toDate().withMessage('Invalid admission date'),
   body('totalFeesPaid').optional().isNumeric().withMessage('Total Fees Paid must be a number'),
- 
+  body('phoneNumber').optional().isNumeric().withMessage('phoneNumber must be a number'),
+  body('batch').optional().isNumeric().withMessage('batch no must be a number'),
   body('scholarshipAmount').optional().isNumeric().withMessage('Scholarship Amount must be a number'),
   body('pendingFees').optional().isNumeric().withMessage('Pending Fees must be a number'),
   body('isActive').optional().isBoolean().withMessage('Is Active must be a boolean')
@@ -96,7 +97,7 @@ router.post('/createstudent', [
     return res.status(400).json({ success, errors: errors.array() });
   }
 
-  const { name, email, course, admissionDate, totalFeesPaid, scholarshipAmount, pendingFees, isActive } = req.body;
+  const { name, email, course, batch, phoneNumber, admissionDate, totalFeesPaid, scholarshipAmount, pendingFees, isActive } = req.body;
 
   try {
     // Check if a student with the same email already exists
@@ -116,8 +117,8 @@ router.post('/createstudent', [
       name,
       email,
       course,
-    
-   
+      phoneNumber,
+      batch,
       admissionDate,
       totalFeesPaid,
       scholarshipAmount,
@@ -140,158 +141,84 @@ router.post('/createstudent', [
       to: student.email,
       subject: 'Welcome to Our School',
       html: `
-      <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-    <style>
-    
-body{
-  width: 50%;
-  margin: auto
-}
-.end{
-
-}
-.logo{
-
-}
-.main{
-  width: 50%;
-  background-color: aquad;
-}
-.div1{
-  float: left;
-  width: 33.33%;
-  font-size: 25px;
-  text-align: end;
-  margin: auto;
-  height: 230px;
-}
-.div2{
-  float: left;
-  width: 33.33%;
-  height: 230px;
-}
-.div3{
-  float: left;
-  width: 33.33%;
-  margin: auto;
-  height: 230px;
-}
-.img{
-  width: 100%;
-  height: 230px;
-}
-a{
-  text-decoration: none;
-  color: black;
-}
-.d3{
-  margin-top: 25px;
-}
-@media only screen and (min-width: 320px) and (max-width: 479px){
-  .logo{
-      width: 100%;
-  }
- body{
-      text-align: center;
-      width: 100%;
-  }
-  .end{
-      background-color: rgb(169, 224, 205);
-  }
-
- .div1{
-  width: 100%;
-  text-align: center;
-  height: 150px;
-  
- }
- .div2{
-  width: 100%;
- }
- .div3{
-  width: 100%;
-  
- }
-
-
-}
-@media only screen and (min-width: 992px){
-  body{
-      width: 50%;
-  }
-}
-    </style>
-</head>
-<body>
-    <div style="margin: auto;">
-        <div class="logo">
-            <img src="https://careerengine.in/wp-content/uploads/2023/02/logo.png" alt="">
-        </div>
-        <hr>
-        <div class="h2">
-            <h2 class="h1">Welcome to Career Engine!</h1>
-        </div>
-        <div>
-            <p>
-                Thank you for choosing the ${student.courseName }course. Your Course Batch ${student.batch}Your course fee is ${student.totalFeesPaid}. We are pleased to inform you that you have been awarded a scholarship of ${student.scholarshipAmount}, which will be deducted from your total fee. Your pending fee is ${student.pendingFees}.
-            </p>
-        </div>
-        <div class="end">
-            <div class="div1 end">
-                <h1>Career Engine</h1>
-                <div style="text-align: center;">
-                    <!-- Facebook icon with real color -->
-                    <i class="fab fa-facebook-f" style="color: #3b5998;"></i>
-                    <!-- Instagram icon -->
-                    <i class="fab fa-instagram" style="color: #E4405F;"></i>
-                    <!-- YouTube icon -->
-                    <i class="fab fa-youtube" style="color: #FF0000;"></i>
-                </div>
-            </div>
-            <div class="div2 end">
-            <img src="https://charn13.github.io/malti-step-form/mm.png" alt="" class="img">
-            </div>
-            <div class="div3 end">
-                <hr>
-                <p class="d3">
-                    <i class="fas fa-phone" style="color: #E4405F;" ></i> <!-- Phone icon -->
-                    <a href="tel">+919041619321</a>
-                </p>
-                <p class="d3">
-                    <i class="far fa-envelope" style="color: #E4405F;"></i> <!-- Email icon -->
-                    <a href="email">Info@careerengine.in</a>
-                </p>
-                <p class="d3">
-                    <i class="fas fa-globe" style="color: #E4405F;" ></i> <!-- Website icon -->
-                    <a href="https://careerengine.in/">https://careerengine.in/</a>
-                </p>
-                <p class="d3">
-                    <i class="fas fa-map-marker-alt" style="color: #E4405F;"></i> <!-- Location icon -->
-                    <a href="https://g.page/r/Ce11Ozd6v2r2EBM/review">Near Maan Chonwk, Chak Road, Sri Muktsar Sahib (152026), Punjab, India</a>
-                </p>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-
-      `,
-     
+ <html xmlns:v="urn:schemas-microsoft-com:vml">
+                <head>
+               
+                </head>
+                <style>
+                    body {
+                        margin: auto;
+                        background-color:#c5c1c187; 
+                        margin-top: 40px;
+                    }
+                    section{
+                        font-family:sans-serif;
+                         width: 75%;
+                          margin: auto;
+                    }
+                    @media only screen and (min-width: 320px) and (max-width: 479px) {
+                        .logo {
+                            width: 100%;
+                        }
+                        body {
+                            text-align: center;
+                            width: 100%;
+                        }
+                        section{
+                            width: 100%;
+                        }
+                    }
+                  
+                  </style>
+                <body >
+                    <section >
+                        <header style="background-color: #fff; padding: 20px; border: 1px solid #faf8f8;">
+                            <div style="width: 100%; margin: auto;  align-items: center;">
+                                <div style="width: 50%; margin: auto;" class="logo">
+                                    <img src="https://careerengine.in/wp-content/uploads/2023/02/logo.png" alt="welcome image">
+                                </div>
+                                <div style="clear:both;"></div>
+                            </div>
+                            <div>
+                                <h2 style="text-align: center;">Welcome to Career Engine!</h2>
+                              
+                                <p style="text-align: center;">Hi ${student.name},</p>
+                                <p> Thank you for choosing the Career Engine. Your Course Batch ${student.batch}. Your course fee is ${student.totalFeesPaid}. We are pleased to inform you that you have been awarded a scholarship of ${student.scholarshipAmount}, which will be deducted from your total fee. Your pending fee is ${student.pendingFees}.</p>
+                                <p>If you have any questions, feel free to contact us at <a style="text-decoration: none;" href="tel:+919041619321">+919041619321</a>.</p>
+                                <p>Career Engine</p>
+                            </div>
+                        </header>
+                        <footer style="background-color:#f5f5f587; border: 1px solid #f5f5f587; padding: 20px; color: #888; text-align: center;">
+                            <div>
+                                <p>&copy; Copyright © 2024 All Rights Reserved. Made with Love by Career Engine</p>
+                                <p>Contact us: Info@careerengine.in | Phone: 9041619321</p>
+                                <h4>Available On</h4>
+                                <div class="social-icons">
+                                    <ul style="text-align: center; display: inline-flex; list-style: none; padding-left: 0px;">
+                                        <li>
+                                            <a href="https://www.facebook.com/careerengine1">
+                                                <img src="https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico" alt="facebook icon" style="margin: 0px 5px;">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.instagram.com/career_engine1/">
+                                                <img src="https://static.cdninstagram.com/rsrc.php/y4/r/QaBlI0OZiks.ico" alt="instagram icon" style="margin: 0px 5px;">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </footer>
+                    </section>
+                </body>
+                </html> `,
     };
 
     // Send the email
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error('Error sending email:', error);
+        return res.status(500).json({ success: false, error: 'Failed to send email' });
       } else {
         console.log('Email sent:', info.response);
       }
@@ -307,8 +234,7 @@ a{
 
 module.exports = router;
 
-
-
+// Route to get all students
 router.get('/students', async (req, res) => {
   try {
     const students = await Student.find();
@@ -318,6 +244,9 @@ router.get('/students', async (req, res) => {
     res.status(500).json({ error: 'Server Error' });
   }
 });
+
+module.exports = router;
+
 
 // Route to retrieve a specific student by ID
 router.get('/students/:id', async (req, res) => {
@@ -687,7 +616,7 @@ router.post('/login', [
 router.post('/createreceipt', [
   body('student').isMongoId().withMessage('Invalid student ID'),
   body('amountPaid').isNumeric(),
-  body('paymentMethod').isIn(['Cash', 'Credit Card', 'Bank Transfer']),
+  body('paymentMethod').isIn(['Cash', 'UPI', 'Bank Transfer']),
   body('receiptNumber').isString().notEmpty(),
   body('notes').optional().isString(),
 ], async (req, res) => {
@@ -722,74 +651,121 @@ const mailOptions = {
   to: studentEmail,
   subject: 'Fee Receipt',
   html: `
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fee Receipt</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .receipt {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 2px solid #333;
-      border-radius: 10px;
-      background-color: #f9f9f9;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .receipt-details {
-      margin-bottom: 20px;
-    }
-    .details-item {
-      margin-bottom: 10px;
-    }
-    .total {
-      font-weight: bold;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="receipt">
-   <div class="logo">
-            <img src="https://careerengine.in/wp-content/uploads/2023/02/logo.png" alt="">
-        </div>
-    <div class="header">
-      <h2>Fee Receipt</h2>
-    </div>
-    <div class="receipt-details">
-      <div class="details-item">
-        <strong>Student Name:</strong> ${studentRecord.name}
-      </div>
-      <div class="details-item">
-        <strong>Amount Paid:</strong> ${amountPaid}
-      </div>
-      <div class="details-item">
-        <strong>Payment Method:</strong> ${paymentMethod}
-      </div>
-      <div class="details-item">
-        <strong>Receipt Number:</strong>${receiptNumber}
-      </div>
-      <div class="details-item">
-        <strong>Notes:</strong>${notes}
-      </div>
-    </div>
-    <div class="footer">
-      <p>Thank you for your payment!</p>
-    </div>
-  </div>
-</body>
-</html>
+   <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+            }
+            .container {
+              width: 100%;
+              max-width: 600px;
+              margin: auto;
+              background-color: #fff;
+              padding: 20px;
+              border: 1px solid #ddd;
+            }
+            .header, .footer {
+              text-align: center;
+              padding: 10px 0;
+            }
+            .header img {
+              max-width: 150px;
+            }
+            .content {
+              text-align: left;
+            }
+            .content h1 {
+              font-size: 24px;
+              margin-bottom: 20px;
+            }
+            .details, .receipts-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-bottom: 20px;
+            }
+            .details th, .details td, .receipts-table th, .receipts-table td {
+              border: 1px solid #ddd;
+              padding: 8px;
+            }
+            .details th, .receipts-table th {
+              background-color: #f2f2f2;
+              text-align: left;
+            }
+            .total {
+              font-weight: bold;
+            }
+            .footer p {
+              color: #888;
+              font-size: 12px;
+              margin: 0;
+            }
+            .social-icons img {
+              width: 24px;
+              margin: 0 5px;
+            }
+            @media only screen and (max-width: 600px) {
+              .container {
+                width: 100%;
+                padding: 10px;
+              }
+              .content h1 {
+                font-size: 20px;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+           <p>Receipt Number: ${receiptNumber}</p>
+            <div class="header">
+              <img src="https://careerengine.in/wp-content/uploads/2023/02/logo.png" alt="Career Engine">
+              <h2>Welcome to Career Engine!</h2>
+               <h2>Fee Receipt</h2>
+            </div>
+            <div class="content">
+             
+             
+              <p>Student: ${studentRecord.name}</p>
+         
+              <p>Payment Method: ${paymentMethod}</p>
+              <p>Notes: ${notes || 'N/A'}</p>
+              <table class="receipts-table">
+                <tr>
+                  <th>Pay Fee</th>
+                  <td>${amountPaid}</td>
+                </tr>
+                <tr>
+                  <th>Total Pending</th>
+                  <td>${studentRecord.pendingFees}</td>
+                </tr>
+              </table>
+              <p>If you have any questions, feel free to contact us at <a href="tel:+919041619321">+919041619321</a>.</p>
+              <p>Career Engine</p>
+            </div>
+            <div class="footer">
+              <p>&copy; 2024 All Rights Reserved. Made with Love by Career Engine</p>
+              <p>Contact us: Info@careerengine.in | Phone: 9041619321</p>
+              <h4>Available On</h4>
+              <div class="social-icons">
+                <a href="https://www.facebook.com/careerengine1">
+                  <img src="https://static.xx.fbcdn.net/rsrc.php/yb/r/hLRJ1GG_y0J.ico" alt="Facebook">
+                </a>
+                <a href="https://www.instagram.com/career_engine1/">
+                  <img src="https://static.cdninstagram.com/rsrc.php/y4/r/QaBlI0OZiks.ico" alt="Instagram">
+                </a>
+              </div>
+            </div>
+          </div>
+        </body>
+        </html>
+
 
   `
 };
@@ -872,9 +848,25 @@ router.get('/receipts', async (req, res) => {
     res.status(500).json({ error: 'Server Error' });
   }
 });
+router.get('/receipts/student/:studentId', async (req, res) => {
+  const { studentId } = req.params;
+  console.log("studentId:", studentId);
 
+  try {
+    const receipts = await Receipt.find({ student:studentId });
+    if (receipts.length === 0) {
+      return res.status(404).json({ message: 'No receipts found for this student ID' });
+    } else {
+      console.log("receipts", receipts);
+      return res.json(receipts);
+    }
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res.status(500).json({ error: 'Server Error' });
+  }
+});
 // Route to retrieve a specific receipt by ID
-router.get('/receipts/:id', async (req, res) => {
+router.get('/receipt/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const receipt = await Receipt.findById(id);
