@@ -619,6 +619,7 @@ router.post('/createreceipt', [
   body('paymentMethod').isIn(['Cash', 'UPI', 'Bank Transfer']),
   body('receiptNumber').isString().notEmpty(),
   body('notes').optional().isString(),
+  body('dateOfPayment').optional().isString(),
 ], async (req, res) => {
   let success = false;
   const errors = validationResult(req);
@@ -626,7 +627,7 @@ router.post('/createreceipt', [
     return res.status(400).json({ success, errors: errors.array() });
   }
 
-  const { student, amountPaid, paymentMethod, receiptNumber, notes } = req.body;
+  const { student, amountPaid, paymentMethod, receiptNumber, notes,dateOfPayment } = req.body;
 
   try {
     // Create the receipt record
@@ -636,6 +637,7 @@ router.post('/createreceipt', [
       paymentMethod,
       receiptNumber,
       notes,
+        dateOfPayment,
     });
 
     const studentRecord = await Student.findById(student);
@@ -736,6 +738,7 @@ const mailOptions = {
          
               <p>Payment Method: ${paymentMethod}</p>
               <p>Notes: ${notes || 'N/A'}</p>
+              <p>Date: ${dateOfPayment}</p>
               <table class="receipts-table">
                 <tr>
                   <th>Pay Fee</th>
