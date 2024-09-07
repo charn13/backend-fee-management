@@ -738,7 +738,7 @@ const mailOptions = {
          
               <p>Payment Method: ${paymentMethod}</p>
               <p>Notes: ${notes || 'N/A'}</p>
-              <p>Date: ${dateOfPayment}</p>
+               <p>Date: ${new Date().toLocaleDateString()}</p>
               <table class="receipts-table">
                 <tr>
                   <th>Pay Fee</th>
@@ -747,6 +747,10 @@ const mailOptions = {
                 <tr>
                   <th>Total Pending</th>
                   <td>${studentRecord.pendingFees}</td>
+                </tr>
+                 <tr>
+                  <th>Remaining Fee</th>
+                  <td>  ${studentRecord.pendingFees - amountPaid} </td>
                 </tr>
               </table>
               <p>If you have any questions, feel free to contact us at <a href="tel:+919041619321">+919041619321</a>.</p>
